@@ -3,6 +3,8 @@ import ProductList from './components/ProductList';
 import ProductDetails from './components/ProductDetails';
 import ProductForm from './components/ProductForm';
 
+import './App.css';
+
 function App() {
   return (
     <Router>
