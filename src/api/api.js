@@ -1,14 +1,36 @@
-import axios from 'axios';
+const API_URL = "https://fakestoreapi.com/products";
 
-const API_URL = 'https://fakestoreapi.com/products';
+export const fetchAllProducts = async () => {
+  const response = await fetch(API_URL);
+  return response.json();
+};
 
-export const getAllProducts = () => axios.get(API_URL);
+export const addProduct = async (product) => {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(product),
+  });
+  return response.json();
+};
 
-export const getProductById = (id) => axios.get(`${API_URL}/${id}`);
+export const getProductById = async (id) => {
+  const response = await fetch(`${API_URL}/${id}`);
+  return response.json();
+};
 
-export const addProduct = (product) => axios.post(API_URL, product);
+export const deleteProduct = async (id) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "DELETE",
+  });
+  return response.json();
+};
 
-export const updateProduct = (id, updatedProduct) =>
-  axios.put(`${API_URL}/${id}`, updatedProduct);
-
-export const deleteProduct = (id) => axios.delete(`${API_URL}/${id}`);
+export const updateProduct = async (id, updatedProduct) => {
+  const response = await fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedProduct),
+  });
+  return response.json();
+};

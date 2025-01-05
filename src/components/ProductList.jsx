@@ -1,36 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { getAllProducts, deleteProduct } from '../api/api.js';
+import React, { useEffect, useState } from "react";
+import ProductCard from "./ProductCard";
+import AddProductForm from "./AddProductForm";
+import { fetchAllProducts } from "../api/api.js";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   useEffect(() => {
-    getAllProducts().then((response) => setProducts(response.data));
+    const getProducts = async () => {
+      const data = await fetchAllProducts();
+      setProducts(data);
+    };
+    getProducts();
   }, []);
 
-  const handleDelete = (id) => {
-    deleteProduct(id).then(() => {
-      setProducts((prev) => prev.filter((product) => product.id !== id));
-    });
+  const handleAddProduct = (newProduct) => {
+    setProducts((prevProducts) => [newProduct, ...prevProducts]);
   };
 
   return (
-    <div>
-      <h1>Products</h1>
-      <Link to="/add-product">Add New Product</Link>
-      <ul>
+    <div className="product-list-container">
+      <button
+        className="add-product-button"
+        onClick={() => setShowAddForm((prev) => !prev)}
+      >
+        {showAddForm ? "Close Form" : "Add New Product"}
+      </button>
+      {showAddForm && <AddProductForm onAddProduct={handleAddProduct} />}
+      <div className="product-cards">
         {products.map((product) => (
-          <li key={product.id}>
-            <img src={product.image} alt={product.title} width={50} />
-            <p>{product.title}</p>
-            <p>{product.price} $</p>
-            <Link to={`/products/${product.id}`}>Details</Link>
-            <Link to={`/edit-product/${product.id}`}>Edit</Link>
-            <button onClick={() => handleDelete(product.id)}>Delete</button>
-          </li>
+          <ProductCard key={product.id} product={product} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
