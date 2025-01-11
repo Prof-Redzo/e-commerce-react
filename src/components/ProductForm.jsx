@@ -1,72 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { addProduct, getProductById, updateProduct } from '../api/api.js';
+import React, { useState } from "react";
 
-const ProductForm = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    title: '',
-    price: '',
-    description: '',
-    category: '',
-    image: '',
-  });
-
-  useEffect(() => {
-    if (id) {
-      getProductById(id).then((response) => setFormData(response.data));
-    }
-  }, [id]);
+const ProductForm = ({ onSubmit, onCancel }) => {
+  const [title, setTitle] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const action = id ? updateProduct(id, formData) : addProduct(formData);
-
-    action.then(() => {
-      navigate('/');
-    });
+    onSubmit({ title, price, description, image });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Title"
-        value={formData.title}
-        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-        required
-      />
-      <input
-        type="number"
-        placeholder="Price"
-        value={formData.price}
-        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-        required
-      />
-      <textarea
-        placeholder="Description"
-        value={formData.description}
-        onChange={(e) =>
-          setFormData({ ...formData, description: e.target.value })
-        }
-        required
-      ></textarea>
-      <input
-        type="text"
-        placeholder="Category"
-        value={formData.category}
-        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-        required
-      />
-      <input
-        type="text"
-        placeholder="Image URL"
-        value={formData.image}
-        onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-        required
-      />
-      <button type="submit">{id ? 'Update' : 'Add'} Product</button>
+    <form className="product-form" onSubmit={handleSubmit}>
+      <h2>Add Product</h2>
+      <label>Title:</label>
+      <input value={title} onChange={(e) => setTitle(e.target.value)} required />
+      <label>Price:</label>
+      <input value={price} onChange={(e) => setPrice(e.target.value)} type="number" required />
+      <label>Description:</label>
+      <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
+      <label>Image URL:</label>
+      <input value={image} onChange={(e) => setImage(e.target.value)} required />
+      <div className="form-buttons">
+        <button type="submit">Add Product</button>
+        <button type="button" onClick={onCancel}>Cancel</button>
+      </div>
     </form>
   );
 };

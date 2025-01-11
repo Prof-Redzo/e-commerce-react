@@ -1,38 +1,20 @@
-import React, { useEffect, useState } from "react";
-import ProductCard from "./ProductCard";
-import AddProductForm from "./AddProductForm";
-import { fetchAllProducts } from "../api/api.js";
+import React from "react";
 
-const ProductList = () => {
-  const [products, setProducts] = useState([]);
-  const [showAddForm, setShowAddForm] = useState(false);
-
-  useEffect(() => {
-    const getProducts = async () => {
-      const data = await fetchAllProducts();
-      setProducts(data);
-    };
-    getProducts();
-  }, []);
-
-  const handleAddProduct = (newProduct) => {
-    setProducts((prevProducts) => [newProduct, ...prevProducts]);
-  };
-
+const ProductList = ({ products }) => {
   return (
-    <div className="product-list-container">
-      <button
-        className="add-product-button"
-        onClick={() => setShowAddForm((prev) => !prev)}
-      >
-        {showAddForm ? "Close Form" : "Add New Product"}
-      </button>
-      {showAddForm && <AddProductForm onAddProduct={handleAddProduct} />}
-      <div className="product-cards">
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+    <div className="product-list">
+      {products.length === 0 ? (
+        <p>No products available</p>
+      ) : (
+        products.map((product) => (
+          <div className="product-card" key={product.id}>
+            <img src={product.image} alt={product.title} />
+            <h2>{product.title}</h2>
+            <p>{product.description}</p>
+            <p>${product.price}</p>
+          </div>
+        ))
+      )}
     </div>
   );
 };
