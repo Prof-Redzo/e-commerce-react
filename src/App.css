@@ -17,10 +17,14 @@ body {
 
 /* Container Styling */
 .app-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
+  max-width: 600px; 
+  margin: 50px auto; 
+  padding: 30px;
+  text-align: left; 
+  background-color: #f8f9fa;
+  border: 1px solid #ddd; 
+  border-radius: 10px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 /* Header */
@@ -36,14 +40,111 @@ header h1 {
   color: #007bff;
 }
 
-.add-product-button {
-  padding: 10px 20px;
-  background-color: #4caf50;
+.add-product-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 500px;
+  margin: 20px auto;
+  margin-bottom: 30px;
+}
+
+.add-product-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.add-product-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.add-product-form label {
+  font-size: 1rem;
+  color: #555;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.add-product-form input,
+.add-product-form textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-product-form input:focus,
+.add-product-form textarea:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.add-product-form textarea {
+  resize: vertical; 
+  min-height: 100px; 
+}
+
+.add-product-form .form-group {
+  display: flex;
+  flex-direction: column; 
+}
+
+.add-product-form .form-group-half {
+  display: flex;
+  gap: 20px; 
+}
+
+.add-product-form .form-group-half .form-group {
+  flex: 1; 
+}
+
+.add-product-form button {
+  margin-top: 20px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
   color: white;
+  background-color: #28a745;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+
+.add-product-form button:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.add-product-form button:active {
+  transform: translateY(0);
+}
+
+.add-product-form .form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 10px;
 }
 
 .add-product-button:hover {
@@ -69,10 +170,14 @@ header h1 {
 }
 
 .product-card img {
-  max-width: 100%;
-  height: auto;
+  max-width: 150px; 
+  max-height: 150px; 
+  height: auto; 
   border-radius: 5px;
   margin-bottom: 10px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
 }
 
 .product-card:hover {
@@ -199,4 +304,18 @@ header h1 {
   .product-form {
     width: 100%;
   }
+  .app-container {
+    max-width: 90%; /* Proširite za manje ekrane */
+    padding: 20px;
+  }
+
+  .add-product-form {
+    gap: 15px;
+    grid-template-columns: 1fr;
+  }
+
+  .form-group-half {
+    flex-direction: column;
+  }
+
 }
