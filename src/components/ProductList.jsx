@@ -1,21 +1,16 @@
-import React from "react";
+import React from 'react';
+import { Grid } from '@mui/material';
+import ProductCard from './ProductCard';
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products, onEdit, onDelete }) => {
   return (
-    <div className="product-list">
-      {products.length === 0 ? (
-        <p>No products available</p>
-      ) : (
-        products.map((product) => (
-          <div className="product-card" key={product.id}>
-            <img src={product.image} alt={product.title} />
-            <h2>{product.title}</h2>
-            <p>{product.description}</p>
-            <p>${product.price}</p>
-          </div>
-        ))
-      )}
-    </div>
+    <Grid container spacing={2} justifyContent="center">
+      {products.map((product) => (
+        <Grid item key={product.id}>
+          <ProductCard product={product} onEdit={onEdit} onDelete={onDelete} />
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 

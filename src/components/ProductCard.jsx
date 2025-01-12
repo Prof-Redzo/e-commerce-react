@@ -1,29 +1,35 @@
-import React from "react";
+import React from 'react';
+import { Card, CardMedia, CardContent, Typography, CardActions, Button } from '@mui/material';
 
-const ProductCard = ({ product }) => {
-  const handleEdit = () => {
-    console.log("Edit product:", product.id);
-  };
-
-  const handleDelete = () => {
-    console.log("Delete product:", product.id);
-  };
-
+const ProductCard = ({ product, onEdit, onDelete }) => {
   return (
-    <div className="product-card">
-      <h3>{product.title}</h3>
-      <p>{product.description}</p>
-      <span className="product-price">${product.price}</span>
-      <div className="card-actions">
-        <button className="edit-button" onClick={handleEdit}>
+    <Card sx={{ maxWidth: 300, m: 2 }}>
+      <CardMedia
+        component="img"
+        height="150"
+        image={product.imageUrl || 'https://via.placeholder.com/150'}
+        alt={product.title}
+      />
+      <CardContent>
+        <Typography variant="h6">{product.title}</Typography>
+        <Typography variant="body2" color="textSecondary">
+          ${product.price}
+        </Typography>
+        <Typography variant="body2" mt={1}>
+          {product.description}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" color="primary" onClick={() => onEdit(product.id)}>
           Edit
-        </button>
-        <button className="delete-button" onClick={handleDelete}>
+        </Button>
+        <Button size="small" color="secondary" onClick={() => onDelete(product.id)}>
           Delete
-        </button>
-      </div>
-    </div>
+        </Button>
+      </CardActions>
+    </Card>
   );
 };
 
 export default ProductCard;
+

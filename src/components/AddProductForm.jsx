@@ -1,44 +1,73 @@
-import React, { useState } from "react";
-import { addProduct } from "../api/api";
+import React from 'react';
+import { TextField, Button, Box, Typography } from '@mui/material';
 
 const AddProductForm = ({ onAddProduct }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
+  const [formData, setFormData] = React.useState({
+    title: '',
+    price: '',
+    description: '',
+    imageUrl: '',
+  });
 
-  const handleSubmit = async (e) => {
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const newProduct = await addProduct({ title, description, price });
-    onAddProduct(newProduct);
-    setTitle("");
-    setDescription("");
-    setPrice("");
+    onAddProduct(formData);
+    setFormData({ title: '', price: '', description: '', imageUrl: '' });
   };
 
   return (
-    <form className="add-product-form" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        required
-      />
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        required
-      />
-      <input
-        type="number"
-        placeholder="Price"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        required
-      />
-      <button type="submit">Add Product</button>
-    </form>
+    <Box sx={{ maxWidth: 600, mx: 'auto', mt: 4, p: 3, border: '1px solid #ddd', borderRadius: 2 }}>
+      <Typography variant="h5" mb={2}>
+        Add Product
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <TextField
+          label="Title"
+          name="title"
+          fullWidth
+          margin="normal"
+          value={formData.title}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Price"
+          name="price"
+          type="number"
+          fullWidth
+          margin="normal"
+          value={formData.price}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Description"
+          name="description"
+          multiline
+          rows={4}
+          fullWidth
+          margin="normal"
+          value={formData.description}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Image URL"
+          name="imageUrl"
+          fullWidth
+          margin="normal"
+          value={formData.imageUrl}
+          onChange={handleChange}
+        />
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+          Add Product
+        </Button>
+      </form>
+    </Box>
   );
 };
 

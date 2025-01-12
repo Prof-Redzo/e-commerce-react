@@ -1,33 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { getProductById, deleteProduct } from '../api/api.js';
+import React from 'react';
+import { Box, Typography, Button } from '@mui/material';
 
-const ProductDetails = () => {
-  const { id } = useParams();
-  const [product, setProduct] = useState(null);
-
-  useEffect(() => {
-    getProductById(id).then((response) => setProduct(response.data));
-  }, [id]);
-
-  const handleDelete = () => {
-    deleteProduct(id).then(() => {
-      window.location = '/';
-    });
-  };
-
-  if (!product) return <p>Loading...</p>;
-
+const ProductDetails = ({ product, onBack }) => {
   return (
-    <div>
-      <h1>{product.title}</h1>
-      <img src={product.image} alt={product.title} />
-      <p>{product.description}</p>
-      <p>{product.price} $</p>
-      <p>Category: {product.category}</p>
-      <Link to={`/edit-product/${id}`}>Edit</Link>
-      <button onClick={handleDelete}>Delete</button>
-    </div>
+    <Box sx={{ maxWidth: 600, mx: 'auto', mt: 4, p: 3, border: '1px solid #ddd', borderRadius: 2 }}>
+      <Typography variant="h4" mb={2}>
+        {product.title}
+      </Typography>
+      <Typography variant="body1" color="textSecondary" mb={1}>
+        Price: ${product.price}
+      </Typography>
+      <Typography variant="body1" mb={2}>
+        {product.description}
+      </Typography>
+      <img
+        src={product.imageUrl || 'https://via.placeholder.com/150'}
+        alt={product.title}
+        style={{ maxWidth: '100%', borderRadius: 8 }}
+      />
+      <Button variant="contained" color="primary" sx={{ mt: 3 }} onClick={onBack}>
+        Back
+      </Button>
+    </Box>
   );
 };
 

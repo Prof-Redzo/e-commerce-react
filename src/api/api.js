@@ -1,36 +1,40 @@
 const API_URL = "https://fakestoreapi.com/products";
 
-export const fetchAllProducts = async () => {
-  const response = await fetch(API_URL);
-  return response.json();
-};
+let products = []; 
 
-export const addProduct = async (product) => {
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(product),
+fetch(API_URL)
+  .then(response => response.json())
+  .then(data => {
+    products = data;
+    console.log(products); 
+  })
+  .catch(error => {
+    console.error("Error fetching data:", error);
   });
-  return response.json();
+
+export const getProducts = () => {
+  return Promise.resolve(products); 
 };
 
-export const getProductById = async (id) => {
-  const response = await fetch(`${API_URL}/${id}`);
-  return response.json();
+export const addProduct = (newProduct) => {
+  newProduct.id = Date.now().toString(); 
+  products.push(newProduct);
+  return Promise.resolve(newProduct); 
 };
 
-export const deleteProduct = async (id) => {
-  const response = await fetch(`${API_URL}/${id}`, {
-    method: "DELETE",
-  });
-  return response.json();
+export const deleteProduct = (productId) => {
+  products = products.filter((product) => product.id !== productId);
+  return Promise.resolve(productId); 
 };
 
-export const updateProduct = async (id, updatedProduct) => {
-  const response = await fetch(`${API_URL}/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(updatedProduct),
-  });
-  return response.json();
+export const updateProduct = (updatedProduct) => {
+  products = products.map((product) =>
+    product.id === updatedProduct.id ? updatedProduct : product
+  );
+  return Promise.resolve(updatedProduct); 
+};
+
+export const getProductDetails = (productId) => {
+  const product = products.find((product) => product.id === productId);
+  return Promise.resolve(product); 
 };
