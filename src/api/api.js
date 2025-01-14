@@ -1,52 +1,76 @@
 const API_URL = "https://fakestoreapi.com/products";
 
-// Dohvatanje svih proizvoda direktno sa API-ja
+// Fetch all products from the API
 export const getProducts = async () => {
   try {
     const response = await fetch(API_URL);
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }
-    const products = await response.json();
-    return products; // Vraća proizvode
+    return await response.json();
   } catch (error) {
     console.error("Error fetching products:", error);
-    return []; // Vraća prazan niz ako dođe do greške
+    throw error;
   }
 };
 
-// Dodavanje novog proizvoda (samo lokalno)
-export const addProduct = (newProduct) => {
-  newProduct.id = Date.now().toString(); // Generiše jedinstven ID
-  products.push(newProduct); // Dodaje novi proizvod lokalno
-  return Promise.resolve(newProduct); // Simulira asinhrono dodavanje
+// Add a new product to the API
+export const addProduct = async (newProduct) => {
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newProduct),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error adding product:", error);
+    throw error;
+  }
 };
 
-// Brisanje proizvoda (samo lokalno)
-export const deleteProduct = (productId) => {
-  products = products.filter((product) => product.id !== productId);
-  return Promise.resolve(productId); // Simulira asinhrono brisanje
+// Delete a product from the API
+export const deleteProduct = async (productId) => {
+  try {
+    await fetch(`${API_URL}/${productId}`, { method: "DELETE" });
+    return productId;
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    throw error;
+  }
 };
 
-// Ažuriranje proizvoda (samo lokalno)
-export const updateProduct = (updatedProduct) => {
-  products = products.map((product) =>
-    product.id === updatedProduct.id ? updatedProduct : product
-  );
-  return Promise.resolve(updatedProduct); // Simulira asinhrono ažuriranje
+// Update a product in the API
+export const updateProduct = async (updatedProduct) => {
+  try {
+    const response = await fetch(`${API_URL}/${updatedProduct.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedProduct),
+    });
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating product:", error);
+    throw error;
+  }
 };
 
-// Dohvatanje detalja proizvoda
+// Fetch product details by ID
 export const getProductDetails = async (productId) => {
   try {
     const response = await fetch(`${API_URL}/${productId}`);
     if (!response.ok) {
-      throw new Error("Failed to fetch product details");
+      throw new Error(`Failed to fetch product details: ${response.status}`);
     }
-    const product = await response.json();
+    const text = await response.text(); // Read the response as text
+    if (!text) {
+      throw new Error("Product details response is empty.");
+    }
+    const product = JSON.parse(text); // Parse the text as JSON
     return product;
   } catch (error) {
     console.error("Error fetching product details:", error);
-    return null; // Vraća null ako dođe do greške
+    return null; // Return null to indicate failure
   }
 };
+

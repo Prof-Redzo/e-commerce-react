@@ -14,7 +14,7 @@ const ProductDetails = ({ product, onBack }) => {
         {product.description}
       </Typography>
       <img
-        src={product.imageUrl || 'https://via.placeholder.com/150'}
+        src={product.imageUrl || '/default-image.jpg'}
         alt={product.title}
         style={{ maxWidth: '100%', borderRadius: 8 }}
       />
